@@ -22,5 +22,13 @@ namespace PersonaDetalle.Entidades
             TipoTelefono = string.Empty;
             Telefono = string.Empty;
         }
+
+        public TelefonoDetalle(int Id, int PersonaId, string telefono, string tipoTelefono)
+        {
+            this.Id = Id;
+            this.PersonaId = PersonaId;
+            Telefono = telefono;
+            TipoTelefono = tipoTelefono;
+        }
     }
 }

@@ -20,19 +20,23 @@ namespace PersonaDetalle.BLL
         {
             bool paso = false;
             //Creamos una instancia del contexto para poder conectar con la DB
-            Contexto contexto = new Contexto();
+            Contexto db = new Contexto();
             try
             {
-                if (contexto.Persona.Add(persona) != null)
+                if (db.Persona.Add(persona) != null)
                 {
-                    contexto.SaveChanges();
+                    db.SaveChanges();
                     paso = true;
                 }
-                contexto.Dispose(); // Siempre hay que cerrar la conexion
+               
             }
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                db.Dispose(); // Siempre hay que cerrar la conexion;
             }
             return paso;
         }
@@ -45,20 +49,22 @@ namespace PersonaDetalle.BLL
             ///<param name="persona">Una instancia de Persona</param>
             ///<returns>Retorna True si modifico o Falso si fallo </returns>
             bool paso = false;
-            Contexto contexto = new Contexto();
+            Contexto db = new Contexto();
             try
             {
-                contexto.Entry(persona).State = EntityState.Modified;
-                if (contexto.SaveChanges() > 0)
+                var Anterior = db.Persona.Find(persona.PersonaId);
+                foreach(var item in Anterior.telefonos)
                 {
-                    paso = true;
+                    if (!persona.telefonos.Exists(d => d.Id == item.Id))
+                        db.Entry(item).State = EntityState.Deleted;
                 }
-                contexto.Dispose();
+                db.Entry(persona).State = EntityState.Modified;
+                paso = (db.SaveChanges() > 0);
             }
             catch (Exception)
-            {
-                throw;
-            }
+            {throw;}
+            finally
+            { db.Dispose(); }
             return paso;
         }
         ///<summary>
@@ -69,45 +75,45 @@ namespace PersonaDetalle.BLL
         public static bool Eliminar(int id)
         {
             bool paso = false;
-            Contexto contexto = new Contexto();
+            Contexto db = new Contexto();
             try
             {
-                var eliminar = contexto.Persona.Find(id);
-                contexto.Entry(eliminar).State = EntityState.Deleted;
-                paso = (contexto.SaveChanges() > 0);
-                contexto.Dispose();
+                var eliminar = db.Persona.Find(id);
+                db.Entry(eliminar).State = EntityState.Deleted;
+                paso = (db.SaveChanges() > 0);
+                
             }
             catch (Exception)
-            {
-                throw;
-            }
+            {throw;}
+            finally
+            { db.Dispose(); }
             return paso;
         }
 
         public static Persona Buscar(int id)
         {
-            Contexto contexto = new Contexto();
+            Contexto db = new Contexto();
             Persona persona = new Persona();
             try
             {
-                persona = contexto.Persona.Find(id);
-                contexto.Dispose();
+                persona = db.Persona.Find(id);
+                persona.telefonos.Count();//Haciendo llamada a lazyloading al cargar los detalles
             }
             catch (Exception)
-            {
-                throw;
-            }
+            {throw;}
+            finally
+            { db.Dispose(); }
             return persona;
         }
 
         public static List<Persona> GetList(Expression<Func<Persona, bool>> expression)
         {
             List<Persona> Personas = new List<Persona>();
-            Contexto contexto = new Contexto();
+            Contexto db = new Contexto();
             try
             {
-                Personas = contexto.Persona.Where(expression).ToList();
-                contexto.Dispose();
+                Personas = db.Persona.Where(expression).ToList();
+                db.Dispose();
             }
             catch (Exception)
             {
