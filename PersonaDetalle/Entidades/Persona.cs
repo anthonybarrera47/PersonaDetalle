@@ -12,8 +12,8 @@ namespace PersonaDetalle.Entidades
        [Key]
         public int PersonaId { get; set; }
         public string Nombre { get; set; }
-        public string Cedula { get; set; }
         public string Direccion { get; set; }
+        public string Cedula { get; set; }
         public DateTime fechaNacimiento { get; set; }
         
         public virtual List<TelefonoDetalle> telefonos { get; set; }
@@ -22,8 +22,8 @@ namespace PersonaDetalle.Entidades
         {
             PersonaId = 0;
             Nombre = string.Empty;
-            Cedula = string.Empty;
             Direccion = string.Empty;
+            Cedula = string.Empty;
             fechaNacimiento = DateTime.Now;
             telefonos = new List<TelefonoDetalle>();
         }

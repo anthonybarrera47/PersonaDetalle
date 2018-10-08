@@ -53,17 +53,21 @@
             this.EliminarButton = new System.Windows.Forms.Button();
             this.GuardarButton = new System.Windows.Forms.Button();
             this.NuevoButton = new System.Windows.Forms.Button();
+            this.telefonoDetalleBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.telefonoDetalleBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.IDNumericUpDowm)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.detalleDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.telefonoDetalleBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.telefonoDetalleBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // FechaTimePicker
             // 
             this.FechaTimePicker.CustomFormat = "dd/MM/yyyy";
             this.FechaTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.FechaTimePicker.Location = new System.Drawing.Point(312, 127);
+            this.FechaTimePicker.Location = new System.Drawing.Point(328, 128);
             this.FechaTimePicker.Name = "FechaTimePicker";
             this.FechaTimePicker.Size = new System.Drawing.Size(97, 22);
             this.FechaTimePicker.TabIndex = 25;
@@ -72,7 +76,7 @@
             // 
             this.DireccionTextBox.Location = new System.Drawing.Point(112, 97);
             this.DireccionTextBox.Name = "DireccionTextBox";
-            this.DireccionTextBox.Size = new System.Drawing.Size(296, 22);
+            this.DireccionTextBox.Size = new System.Drawing.Size(313, 22);
             this.DireccionTextBox.TabIndex = 24;
             // 
             // CedulaMasketTextBox
@@ -88,13 +92,13 @@
             this.NombreTextBox.Location = new System.Drawing.Point(113, 67);
             this.NombreTextBox.MaxLength = 30;
             this.NombreTextBox.Name = "NombreTextBox";
-            this.NombreTextBox.Size = new System.Drawing.Size(296, 22);
+            this.NombreTextBox.Size = new System.Drawing.Size(313, 22);
             this.NombreTextBox.TabIndex = 22;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(219, 132);
+            this.label6.Location = new System.Drawing.Point(235, 133);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 17);
             this.label6.TabIndex = 21;
@@ -155,7 +159,7 @@
             this.groupBox1.Controls.Add(this.detalleDataGridView);
             this.groupBox1.Location = new System.Drawing.Point(12, 153);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(404, 247);
+            this.groupBox1.Size = new System.Drawing.Size(414, 247);
             this.groupBox1.TabIndex = 26;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Agregar Telefonos";
@@ -164,7 +168,7 @@
             // 
             this.AgregarTelefonoButton.Image = global::PersonaDetalle.Properties.Resources.if_add_134224;
             this.AgregarTelefonoButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.AgregarTelefonoButton.Location = new System.Drawing.Point(235, 201);
+            this.AgregarTelefonoButton.Location = new System.Drawing.Point(247, 201);
             this.AgregarTelefonoButton.Name = "AgregarTelefonoButton";
             this.AgregarTelefonoButton.Size = new System.Drawing.Size(161, 40);
             this.AgregarTelefonoButton.TabIndex = 23;
@@ -194,11 +198,12 @@
             this.AgregarTipoButton.Size = new System.Drawing.Size(21, 23);
             this.AgregarTipoButton.TabIndex = 21;
             this.AgregarTipoButton.UseVisualStyleBackColor = true;
+            this.AgregarTipoButton.Click += new System.EventHandler(this.AgregarTipoButton_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(206, 27);
+            this.label7.Location = new System.Drawing.Point(215, 27);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(40, 17);
             this.label7.TabIndex = 20;
@@ -208,15 +213,15 @@
             // 
             this.TipoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TipoComboBox.FormattingEnabled = true;
-            this.TipoComboBox.Location = new System.Drawing.Point(252, 20);
+            this.TipoComboBox.Location = new System.Drawing.Point(261, 22);
             this.TipoComboBox.Name = "TipoComboBox";
             this.TipoComboBox.Size = new System.Drawing.Size(121, 24);
             this.TipoComboBox.TabIndex = 19;
             // 
             // TelefonoMasketTextBox
             // 
-            this.TelefonoMasketTextBox.Location = new System.Drawing.Point(100, 21);
-            this.TelefonoMasketTextBox.Mask = "(999)000-0000";
+            this.TelefonoMasketTextBox.Location = new System.Drawing.Point(100, 22);
+            this.TelefonoMasketTextBox.Mask = "000-0000000";
             this.TelefonoMasketTextBox.Name = "TelefonoMasketTextBox";
             this.TelefonoMasketTextBox.Size = new System.Drawing.Size(100, 22);
             this.TelefonoMasketTextBox.TabIndex = 18;
@@ -232,11 +237,13 @@
             // 
             // detalleDataGridView
             // 
+            this.detalleDataGridView.AllowUserToOrderColumns = true;
             this.detalleDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.detalleDataGridView.Location = new System.Drawing.Point(7, 49);
             this.detalleDataGridView.Name = "detalleDataGridView";
+            this.detalleDataGridView.ReadOnly = true;
             this.detalleDataGridView.RowTemplate.Height = 24;
-            this.detalleDataGridView.Size = new System.Drawing.Size(389, 150);
+            this.detalleDataGridView.Size = new System.Drawing.Size(401, 150);
             this.detalleDataGridView.TabIndex = 0;
             // 
             // errorProvider
@@ -295,11 +302,19 @@
             this.NuevoButton.UseVisualStyleBackColor = true;
             this.NuevoButton.Click += new System.EventHandler(this.NuevoButton_Click);
             // 
+            // telefonoDetalleBindingSource
+            // 
+            this.telefonoDetalleBindingSource.DataSource = typeof(PersonaDetalle.Entidades.TelefonoDetalle);
+            // 
+            // telefonoDetalleBindingSource1
+            // 
+            this.telefonoDetalleBindingSource1.DataSource = typeof(PersonaDetalle.Entidades.TelefonoDetalle);
+            // 
             // RegistroPersonas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 487);
+            this.ClientSize = new System.Drawing.Size(455, 487);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.FechaTimePicker);
             this.Controls.Add(this.DireccionTextBox);
@@ -322,6 +337,8 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.detalleDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.telefonoDetalleBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.telefonoDetalleBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,5 +370,7 @@
         private System.Windows.Forms.Button RemoverFilaButton;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.Button AgregarTelefonoButton;
+        private System.Windows.Forms.BindingSource telefonoDetalleBindingSource;
+        private System.Windows.Forms.BindingSource telefonoDetalleBindingSource1;
     }
 }

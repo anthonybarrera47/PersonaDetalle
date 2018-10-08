@@ -19,7 +19,9 @@ namespace PersonaDetalle.UI.Registro
         {
             InitializeComponent();
             this.Detalle = new List<TelefonoDetalle>();
-            TipoComboBox.SelectedIndex = 0;
+ 
+            LlenarComboBox();
+         
         }
 
         private void Limpiar()
@@ -27,20 +29,27 @@ namespace PersonaDetalle.UI.Registro
             errorProvider.Clear();
             IDNumericUpDowm.Value = 0;
             NombreTextBox.Text = string.Empty;
-            CedulaMasketTextBox.Text = string.Empty;
             DireccionTextBox.Text = string.Empty;
+            CedulaMasketTextBox.Text = string.Empty;
             FechaTimePicker.Value = DateTime.Now;
             
             this.Detalle = new List<TelefonoDetalle>();
             CargarGrid();
+           
+        }
+        private void LlenarComboBox()
+        {
+            TipoComboBox.DataSource = TipoTelefonoBLL.GetList(x => true);
+            TipoComboBox.ValueMember = "TipoId";
+            TipoComboBox.DisplayMember = "TipoTelefonoR";
         }
         public Persona LlenaClase()
         {
             Persona persona = new Persona();
             persona.PersonaId = Convert.ToInt32(IDNumericUpDowm.Value);
             persona.Nombre = NombreTextBox.Text;
-            persona.Cedula = CedulaMasketTextBox.Text;
             persona.Direccion = DireccionTextBox.Text;
+            persona.Cedula = CedulaMasketTextBox.Text;
             persona.fechaNacimiento = FechaTimePicker.Value;
 
             persona.telefonos = this.Detalle;
@@ -50,8 +59,8 @@ namespace PersonaDetalle.UI.Registro
         {
             IDNumericUpDowm.Value = persona.PersonaId;
             NombreTextBox.Text = persona.Nombre;
-            CedulaMasketTextBox.Text = persona.Cedula;
             DireccionTextBox.Text = persona.Direccion;
+            CedulaMasketTextBox.Text = persona.Cedula;
             FechaTimePicker.Value = persona.fechaNacimiento;
 
             this.Detalle = persona.telefonos;
@@ -107,22 +116,14 @@ namespace PersonaDetalle.UI.Registro
         }
 
 
-        private void RemoverFilaButton_Click(object sender, EventArgs e)
-        {
-            if(detalleDataGridView.Rows.Count > 0 && detalleDataGridView.CurrentRow !=null)
-            {
-                this.Detalle.RemoveAt(detalleDataGridView.CurrentRow.Index);
-                CargarGrid();
-            }
-        }
-
         private void BuscarButton_Click(object sender, EventArgs e)
         {
             int id;
             Persona persona = new Persona();
             int.TryParse(IDNumericUpDowm.Text, out id);
+            if (!ExisteEnLaBaseDeDatos())
+                return;
             persona = PersonaBLL.Buscar(id);
-
             if (persona != null)
             {
                 errorProvider.Clear();
@@ -133,6 +134,15 @@ namespace PersonaDetalle.UI.Registro
                 MessageBox.Show("Pesona No Encontrada", "Fallo!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        public bool ValidarRemover()
+        {
+            bool paso = true;
+            if(detalleDataGridView.SelectedRows == null)
+            {
+                paso = false;
+            }
+            return paso;
+        }
         private void GuardarButton_Click(object sender, EventArgs e)
         {
             Persona persona;
@@ -159,7 +169,7 @@ namespace PersonaDetalle.UI.Registro
             }
             else
                 MessageBox.Show("No se pudo Guardar!!", "Fallo!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+               
         }
 
         private void EliminarButton_Click(object sender, EventArgs e)
@@ -180,24 +190,51 @@ namespace PersonaDetalle.UI.Registro
             }
         }
 
+        public bool ValidarAgregarTelefono()
+        {
+            bool paso = true;
+            if (String.IsNullOrWhiteSpace(TelefonoMasketTextBox.Text.Replace("-","")))
+            {
+                errorProvider.SetError(TelefonoMasketTextBox, "Debe Insertar un numero de telefono");
+                TelefonoMasketTextBox.Focus();
+                paso = false;
+            }
+            return paso;
+        }
         private void AgregarTelefonoButton_Click(object sender, EventArgs e)
         {
-            if (!Validar())
-                return;
             if (detalleDataGridView.DataSource != null)
                 this.Detalle = (List<TelefonoDetalle>)detalleDataGridView.DataSource;
             //todo: validar campos del detalle
-
+            if (!ValidarAgregarTelefono())
+                return;
             //Agregar un nuevo detalle con los datos introducidos.
             this.Detalle.Add(
                 new TelefonoDetalle(
                     Id: 0,
                     PersonaId: (int)IDNumericUpDowm.Value,
                     telefono: TelefonoMasketTextBox.Text,
-                    tipoTelefono: TipoComboBox.SelectedText
+                    tipoTelefono: Convert.ToString(TipoComboBox.Text)
                     )
                );
+            errorProvider.Clear();
             CargarGrid();
+        }
+        private void RemoverFilaButton_Click(object sender, EventArgs e)
+        {
+            if (!ValidarRemover())
+                return;
+            if (detalleDataGridView.Rows.Count > 0 && detalleDataGridView.CurrentRow != null)
+            {
+                this.Detalle.RemoveAt(detalleDataGridView.CurrentRow.Index);
+                CargarGrid();
+            }
+        }
+
+        private void AgregarTipoButton_Click(object sender, EventArgs e)
+        {
+            RegistroTipoTelefono registroTipoTelefono = new RegistroTipoTelefono();
+            registroTipoTelefono.ShowDialog();
         }
     }
 }

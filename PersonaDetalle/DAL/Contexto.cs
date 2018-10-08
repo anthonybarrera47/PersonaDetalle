@@ -11,6 +11,7 @@ namespace PersonaDetalle.DAL
     public class Contexto : DbContext
     {
         public DbSet<Persona> Persona { get; set; }
+        public DbSet<TipoTelefono> tipo { get; set; }
 
         public Contexto() : base("ConStr")
         { }

@@ -59,7 +59,10 @@ namespace PersonaDetalle.BLL
                         db.Entry(item).State = EntityState.Deleted;
                 }
                 db.Entry(persona).State = EntityState.Modified;
-                paso = (db.SaveChanges() > 0);
+                if(db.SaveChanges()>0)
+                {
+                    paso = true;
+                }
             }
             catch (Exception)
             {throw;}
@@ -108,18 +111,22 @@ namespace PersonaDetalle.BLL
 
         public static List<Persona> GetList(Expression<Func<Persona, bool>> expression)
         {
-            List<Persona> Personas = new List<Persona>();
+            List<Persona> Lista = new List<Persona>();
             Contexto db = new Contexto();
             try
             {
-                Personas = db.Persona.Where(expression).ToList();
-                db.Dispose();
+                Lista = db.Persona.Where(expression).ToList();
+                
             }
             catch (Exception)
             {
                 throw;
             }
-            return Personas;
+            finally
+            {
+                db.Dispose();
+            }
+            return Lista;
         }
     }
 }

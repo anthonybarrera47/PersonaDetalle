@@ -87,7 +87,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "RegistroDetalle";
-            this.Text = "Form1";
+            this.Text = "Registro De Personas";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
