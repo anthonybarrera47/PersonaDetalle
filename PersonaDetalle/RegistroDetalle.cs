@@ -1,4 +1,5 @@
-﻿using PersonaDetalle.UI.Registro;
+﻿using PersonaDetalle.UI.Consultas;
+using PersonaDetalle.UI.Registro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,13 @@ namespace PersonaDetalle
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void consultarPersonasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConsultaPersonas consultaPersonas = new ConsultaPersonas();
+            consultaPersonas.MdiParent = this;
+            consultaPersonas.Show();
         }
     }
 }
